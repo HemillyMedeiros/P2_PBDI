@@ -31,3 +31,7 @@ CREATE TRIGGER trigger_valida_numerico
 BEFORE INSERT OR UPDATE ON tab_youtubers
 FOR EACH ROW
 EXECUTE FUNCTION valida_numerico();
+
+-- Altera a tabela para adicionar a coluna "ativo"
+ALTER TABLE tab_youtubers
+ADD COLUMN ativo INTEGER DEFAULT 1 CHECK (ativo IN (0, 1));
