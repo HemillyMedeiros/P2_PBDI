@@ -35,3 +35,13 @@ EXECUTE FUNCTION valida_numerico();
 -- Altera a tabela para adicionar a coluna "ativo"
 ALTER TABLE tab_youtubers
 ADD COLUMN ativo INTEGER DEFAULT 1 CHECK (ativo IN (0, 1));
+
+--1.4: Tabela log
+-- Criação da tabela de log
+CREATE TABLE log_youtubers (
+    log_id SERIAL PRIMARY KEY,
+    youtuber_nome VARCHAR(255),
+    youtuber_categoria VARCHAR(255),
+    youtuber_ano_inicio INTEGER
+    -- Adicione outras colunas conforme necessário
+);
