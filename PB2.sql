@@ -14,3 +14,20 @@ CREATE TABLE tab_youtubers (
 	category VARCHAR(255),
 	started VARCHAR(255)
 );
+
+-- Criação do Trigger
+CREATE OR REPLACE FUNCTION valida_numerico()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.campo_numerico < 0 OR NEW.outro_campo_numerico < 0 THEN
+        RAISE EXCEPTION 'Não são permitidos valores negativos em campos numéricos.';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+ 
+-- Associação do Trigger à tabela
+CREATE TRIGGER trigger_valida_numerico
+BEFORE INSERT OR UPDATE ON tab_youtubers
+FOR EACH ROW
+EXECUTE FUNCTION valida_numerico();
