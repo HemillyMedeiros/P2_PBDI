@@ -45,3 +45,23 @@ CREATE TABLE log_youtubers (
     youtuber_ano_inicio INTEGER
     -- Adicione outras colunas conforme necessário
 );
+
+--1.5 Trigger:
+CREATE OR REPLACE FUNCTION log_deletar_youtuber()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO log_youtubers (youtuber_nome, youtuber_categoria, youtuber_ano_inicio)
+    VALUES (OLD.nome, OLD.categoria, OLD.ano_inicio);
+    UPDATE youtubers SET ativo = 0 WHERE id = OLD.id;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+ 
+-- Associação do Trigger à tabela
+CREATE TRIGGER trigger_log_deletar_youtuber
+BEFORE DELETE ON tab_youtubers
+FOR EACH ROW
+EXECUTE FUNCTION log_deletar_youtuber()
+
+
+
